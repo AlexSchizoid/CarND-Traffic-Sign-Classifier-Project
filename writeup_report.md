@@ -23,7 +23,7 @@ The goals / steps of this project are the following:
 [image6]: ./examples/processed_color.png "Processed Color Sample"
 [image7]: ./examples/random_train.jpg "Random Samples Training set"
 [image8]: ./examples/random_valid.jpg "Random Samples Validation set"
-[image9]: ./examples/regularization.png "Compare Regularzation methods"
+[image9]: ./examples/regularization2.png "Compare Regularzation methods"
 [image10]: ./examples/unprocessed_color.png "Unprocessed Color sample"
 [image11]: ./examples/processed_gray.png "Processed Grayscale Sample"
 [image12]: ./examples/new_signs.png "New signs"
