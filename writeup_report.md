@@ -15,14 +15,18 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image1]: ./examples/color_plot.png "Comparison between preprocessing"
+[image2]: ./examples/distrib_test.jpg "Distrbution test samples"
+[image3]: ./examples/distrib_train.jpg "Distrbution train samples"
+[image4]: ./examples/distrib_valid.jpg "Distrbution valid samples"
+[image5]: ./examples/learnrate.png "Learning Rate Learn curve for the Validation set"
+[image6]: ./examples/processed_color.png "Processed Color Sample"
+[image7]: ./examples/random_train.jpg "Random Samples Training set"
+[image8]: ./examples/random_valid.jpg "Random Samples Validation set"
+[image9]: ./examples/regularization.png "Compare Regularzation methods"
+[image10]: ./examples/unprocessed_color.png "Unprocessed Color sample"
+[image11]: ./examples/processed_gray.png "Processed Grayscale Sample"
+[image12]: ./examples/new_signs.png "New signs"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -49,11 +53,18 @@ signs data set:
 
 ####2. Include an exploratory visualization of the dataset.
 
+First Visualization is a plot of various random samples from the train and validation sets.
+
+Train set Samples:
+![alt text][image7]
+
 For the exploratory visualization part i decided to see how the various classes are distributed in the dataset. As the bar chart shows some classes are smaller than others which could possibly lead to overfitting. A solution for this might pe equalizing the number of samples per class, by fetching more examples are generating extra samples. 
 
 The three datasets seem to have similar distributions.
 
-![alt text][image1]
+![alt text][image2]
+![alt text][image3]
+![alt text][image4]
 
 ###Design and Test a Model Architecture
 
@@ -63,6 +74,27 @@ In the second scenario, I decided to keep the samples in color, but apply Contra
 In the third scenario,  the samples are grayscaled and then I apply CLAHE for the same reason as above.
 
 The following plot shows that the second scenario seems to work a little bit better than the others, so I've chosen this method for the preprocessing step.
+
+![alt text][image1]
+
+Following are examples of outputs after my processing pipelines.
+
+The original image looks like this.
+
+
+
+![alt text][image10]
+
+A processed color image looks like this.
+
+
+
+![alt text][image6]
+
+A processed grayscale image looks like this.
+
+
+![alt text][image11]
 
 ####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -78,9 +110,9 @@ My final model consisted of the following layers:
 | RELU					|												|
 | Max pooling	      	| 2x2 stride,  outputs 5x5x16 				|
 | Fully connected		| Input = 400. Output = 120.	|
-| Dropout		| |
+| Dropout		| 0.5 prob|
 | Fully connected		| Input = 120. Output = 84.	|
-| Dropout		| |
+| Dropout		| 0.5 prob|
 | Batch Normalization		| |
 | Fully connected		| Input = 84. Output = 43.	|
 | Softmax				| etc.        									|
@@ -89,6 +121,8 @@ My final model consisted of the following layers:
  ####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
  
  For the learning rate i did a comparison between different values. The plot shows that 0.003 seemed to provide the best accuracy. Using batch normalization also seems to speed up learing my allowing us to use a higher learning rate and lower number of epochs.
+ 
+ ![alt text][image5]
 
 To train the model i selected 100 epochs and a learning rate of 0.003 as my hyper parameters.
  
@@ -102,6 +136,8 @@ My final model results were:
 
 I started with the LeNet model since it is a simple model that has shown itself to perform reasonably well in image classification problems. The model folows the LeNet ConvNet with the addition of regularization layers of dropout and batch normalization. The regularization layers were added because the default model tended to overfit the data. The following plot shows the perfromance between the default LeNet model and the improved one with regularization. 
 
+![alt text][image9]
+
 To improve the model, more training data will prove useful in preventing overfitting further. 
 
 ###Test a Model on New Images
@@ -110,8 +146,7 @@ To improve the model, more training data will prove useful in preventing overfit
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][image12]
 
 The third and fifth image might be difficult to classify since the signs are a lot smaller and placed in the right part of the picture. 
 
@@ -125,22 +160,21 @@ Here are the results of the prediction:
 | Priority Road 			| Priority Road 			|
 | Yield					| Slippery road											|
 | Stop      		| Stop Road					 				|
-| Roundabout			| No passing for vehicles over 3.5 metric tons    							|
+| Roundabout			| Go straight or right   							|
 
 
 The model was able to correctly guess 3 of the 5 traffic signs, which gives an accuracy of 60%. 
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
-
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+It seems the model is very sure of it's predictions, outputing 1.0 even though the 3rd and 5th predictions are clearly wrong.
+I'm still investigating and wondering if this is a bug in my code when outputting the softmax probabilities.
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Right-of-way at the next intersection   									| 
-| .20     				| Priority Road 										|
-| .05					| Slippery road											|
-| .04	      			| Stop Road						 				|
-| .01				    | No passing for vehicles over 3.5 metric tons       							|
+| 1.0         			| Right-of-way at the next intersection   									| 
+| 1.0     				| Priority Road 										|
+| 1.0					| Slippery road											|
+| 1.0	      			| Stop Road						 				|
+| 1.0				    |  Go straight or right      							|
 
